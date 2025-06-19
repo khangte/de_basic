@@ -1,8 +1,8 @@
 # 진행과정
 
-첫 번째: docker-compose 활용해서 Streamlit app 시각화
-두 번째: docker-compose 활용해서 FastAPI + Streamlit (ML)
-세 번째: docker-compose 활용해서 MySQL + Streamlit (CRUD)
+- 첫 번째: docker-compose 활용해서 Streamlit app 시각화
+- 두 번째: docker-compose 활용해서 FastAPI + Streamlit (ML)
+- 세 번째: docker-compose 활용해서 MySQL + Streamlit (CRUD)
 
 # 핵심적인 명령어
 
