@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  mydb:
+    image: mysql:8.0
+    container_name: mydb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpw
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    # mysql_data라는 Docker 볼륨을 컨테이너의 /var/lib/mysql에 연결
+		# → MySQL 데이터는 여기 저장되며 컨테이너 삭제해도 보존
+
+  streamlit:
+    build: ./app
+    container_name: streamlit-1
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./app:/app
+    environment:
+      - MYSQL_HOST=mydb # docker-compose의 mysql 서비스명
+      - MYSQL_PORT=3306 # 컨테이너 내에 있는 포트번호
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=testpw
+      - MYSQL_DATABASE=testdb
+    depends_on:
+      - mydb
+    # mydb 컨테이너가 먼저 시작되어야 함
+    # → DB가 준비되기 전에 Streamlit이 요청하면 에러나므로 순서 보장
+
+volumes:
+  mysql_data:
+  # 이름만 정의된 Docker 익명 볼륨
+  # Compose가 자동으로 /var/lib/docker/volumes/mysql_data 아래 디렉터리를 만들어 ㅈ무
+  # MySQL DB 파일을 여기에 저장
